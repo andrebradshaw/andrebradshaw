@@ -1,7 +1,6 @@
 /*
 requires zipcode JSON file uploaded and named variable as "fileArray"
 */
-
 var reg = (o, n) => o ? o[n] : '';
 var cn = (o, s) => o ? o.getElementsByClassName(s) : console.log(o);
 var tn = (o, s) => o ? o.getElementsByTagName(s) : console.log(o);
@@ -150,11 +149,12 @@ function createLocalPoliticsSearchHTML(){
   cbod.appendChild(opt_cont);
   
   var sel_all = ele('div');
-  a(sel_all,[['selection','none'],['style','width: 5ch; box-shadow: -2px -2px 0.5px 0.5px #172b33; border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
+  a(sel_all,[['selection','none'],['style','text-align: center; width: 21px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
+//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
   opt_cont.appendChild(sel_all);
-  sel_all.innerText = 'none';
+  sel_all.innerText = '-';
   sel_all.onclick = selectAllOptions;
-
+// 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
   type_options.forEach(t=> createOptionTypeCard(t,opt_cont));
   
   var search_btn = ele('div');
@@ -195,6 +195,8 @@ function createOptionTypeCard(d,ref){
 }
 
 function selectAllOptions(){
+//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
+//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
   var selection = this.getAttribute('selection');
   if(selection == 'all'){
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
@@ -202,14 +204,16 @@ function selectAllOptions(){
        a(r,[['selection','on']]);
      });
      a(this,[['selection','none']]);
-     this.innerText = 'none';
+     this.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
+     this.innerText = '-';
   }else{
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
        a(tn(r,'path')[0],[['fill','#e21212']]);
        a(r,[['selection','off']]);
      });
      a(this,[['selection','all']]);
-     this.innerText = 'all';
+     this.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
+     this.innerText = '+';
   }
 }
 
