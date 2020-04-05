@@ -45,7 +45,7 @@ async function searchBallotBy(obj, file_ref){
 
 var svgs = {
     close: `<svg x="0px" y="0px" viewBox="0 0 100 100"><g style="transform: scale(0.85, 0.85)" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(2, 2)" stroke="#e21212" stroke-width="8"><path d="M47.806834,19.6743435 L47.806834,77.2743435" transform="translate(49, 50) rotate(225) translate(-49, -50) "/><path d="M76.6237986,48.48 L19.0237986,48.48" transform="translate(49, 50) rotate(225) translate(-49, -50) "/></g></g></svg>`,
-    check: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21px" height="21px" viewBox="0 0 20 20" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">        <g transform="translate(-646, -200)"><g transform="translate(100, 100)"><g transform="translate(544, 98)">                    <g><polygon points="0 0 24 0 24 24 0 24"/><path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M9.29,16.29 L5.7,12.7 C5.31,12.31 5.31,11.68 5.7,11.29 C6.09,10.9 6.72,10.9 7.11,11.29 L10,14.17 L16.88,7.29 C17.27,6.9 17.9,6.9 18.29,7.29 C18.68,7.68 18.68,8.31 18.29,8.7 L10.7,16.29 C10.32,16.68 9.68,16.68 9.29,16.29 Z" fill="#26bd7e"/></g></g></g></g></g></svg>`,
+    check: `<svg width="10px" height="10px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 80.588 61.158" style="enable-background:new 0 0 80.588 61.158;" xml:space="preserve"><path style="fill:#26bd7e;" d="M29.658,61.157c-1.238,0-2.427-0.491-3.305-1.369L1.37,34.808c-1.826-1.825-1.826-4.785,0-6.611  c1.825-1.826,4.786-1.827,6.611,0l21.485,21.481L72.426,1.561c1.719-1.924,4.674-2.094,6.601-0.374  c1.926,1.72,2.094,4.675,0.374,6.601L33.145,59.595c-0.856,0.959-2.07,1.523-3.355,1.56C29.746,61.156,29.702,61.157,29.658,61.157z  "/></svg>`,
 };
 
   function aninCloseBtn() {
@@ -179,17 +179,17 @@ async function initBallotSearch(){
 
 function createOptionTypeCard(d,ref){
   var cont = ele('div');
-  a(cont,[['style',`display: grid; grid-template-columns: 30px 1fr; grid-gap: 4px;`]]);
+  a(cont,[['style',`display: grid; grid-template-columns: 21px 1fr; grid-gap: 4px; transition: all 111ms;`]]);
   ref.appendChild(cont);
 
   var check = ele('div');
-  a(check,[['class','type_data_objects'],['type',d],['selection','on'],['style',`cursor: pointer;`]])
+  a(check,[['class','type_data_objects'],['type',d],['selection','on'],['style',`text-align: center; width: 18px; height: 18px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer;`]]);
   cont.appendChild(check);
   check.innerHTML = svgs.check;
   check.onclick = typeOptionSelector;
 
   var text = ele('div');
-  a(text,[['style',`background: #122026; font-size: 1.3em; color: #fff; padding 6px; tranistion: all 1s;`]]);
+  a(text,[['style',`background: #122026; font-size: 1em; color: #fff; padding 6px; tranistion: all 1s;`]]);
   cont.appendChild(text);
   text.innerText = d;
 }
@@ -200,7 +200,12 @@ function selectAllOptions(){
   var selection = this.getAttribute('selection');
   if(selection == 'all'){
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
-       a(tn(r,'path')[0],[['fill','#26bd7e']]);
+//        a(tn(r,'path')[0],[['fill','#26bd7e']]);
+// e21212
+       r.innerHTML = svgs.check;
+       r.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
+       r.onmouseenter = ()=> {};
+       r.onmouseleave = ()=> {};
        a(r,[['selection','on']]);
      });
      a(this,[['selection','none']]);
@@ -208,7 +213,11 @@ function selectAllOptions(){
      this.innerText = '-';
   }else{
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
-       a(tn(r,'path')[0],[['fill','#e21212']]);
+//        a(tn(r,'path')[0],[['fill','#e21212']]);
+       r.innerHTML = svgs.close;
+       r.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
+       r.onmouseenter = aninCloseBtn;
+       r.onmouseleave = anoutCloseBtn;
        a(r,[['selection','off']]);
      });
      a(this,[['selection','all']]);
@@ -220,10 +229,19 @@ function selectAllOptions(){
 function typeOptionSelector(){
   var selection = this.getAttribute('selection');
   if(selection == 'on'){
-    a(tn(this,'path')[0],[['fill','#e21212']]);
+//     a(tn(this,'path')[0],[['fill','#e21212']]);
+
+    this.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
+    this.innerHTML = svgs.close;
+    this.onmouseenter = aninCloseBtn;
+    this.onmouseleave = anoutCloseBtn;
     a(this,[['selection','off']]);
   }else{
-    a(tn(this,'path')[0],[['fill','#26bd7e']]);
+//     a(tn(this,'path')[0],[['fill','#26bd7e']]);
+     this.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
+     this.innerHTML = svgs.check;
+     this.onmouseenter = ()=> {};
+     this.onmouseleave = ()=> {};
     a(this,[['selection','on']]);
   }
 }
