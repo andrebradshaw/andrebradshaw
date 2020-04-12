@@ -105,11 +105,11 @@ function createLocalPoliticsSearchHTML(){
   
   var rect = {top: 100, left: 10, width: 600};
   var cont = ele('div');
-  a(cont,[['id','local_political_search_cont'],['style',`position: fixed; top: ${rect.top}px; left: ${rect.left}px; z-index: ${new Date().getTime()}; width: ${rect.width}px; background: transparent; font-size: 12px;`]]);
+  a(cont,[['id','local_political_search_cont'],['style',`border-radius: 0.4em; border: 1px solid transparent; position: fixed; top: ${rect.top}px; left: ${rect.left}px; z-index: ${new Date().getTime()}; width: ${rect.width}px; background: transparent; font-size: 12px;`]]);
   document.body.appendChild(cont);
 
   var head = ele('div');
-  a(head, [    ['style', `font-size: 1.2em; display: grid; grid-template-columns: 1fr 29px; width: 100%; background: #0a1114; border: 1.6px solid #0a1114; border-top-left-radius: 0.4em; border-top-right-radius: 0.4em; cursor: move;`]  ]);
+  a(head, [    ['style', `font-size: 1.2em; display: grid; grid-template-columns: 1fr 29px; width: 100%; background: #122026; border: 1.6px solid transparent; border-top-left-radius: 0.4em; border-top-right-radius: 0.4em; cursor: move; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px rgba(25, 47, 56, 0.6);`]  ]);
   cont.appendChild(head);
   head.onmouseover = dragElement;
 
@@ -127,7 +127,7 @@ function createLocalPoliticsSearchHTML(){
   cls.onclick = () => cont.outerHTML = '';
 
   var cbod = ele('div');
-  a(cbod, [['style', `display: grid; grid-template-columns: ${Math.floor(rect.width*.33)}px ${Math.floor(rect.width*.66)}px; grid-gap: 5px; background: #122026; padding 6px;`]]);
+  a(cbod, [['style', `display: grid; grid-template-columns: ${Math.floor(rect.width*.33)}px ${Math.floor(rect.width*.66)}px; grid-gap: 5px; background: #122026; padding 6px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px rgba(25, 47, 56, 0.6);`]]);
   cont.appendChild(cbod);
 
   var search_cont = ele('div');
@@ -135,7 +135,7 @@ function createLocalPoliticsSearchHTML(){
   cbod.appendChild(search_cont);
   
   var zip_search = ele('input');
-  a(zip_search,[['id','zip_code_search_input'],['placeholder','Zip-Code'],['maxlength','5'],['style',`font-size: 1.2em; padding: 6px; border: 1px solid #fff; border-radius: .4em; background: #fff; width: 100%;`]]);
+  a(zip_search,[['id','zip_code_search_input'],['placeholder','Zip-Code'],['maxlength','5'],['style',`font-size: 1.2em; padding: 6px; border: 1px solid transparent; border-radius: .4em; background: transparent; width: 100%; box-shadow: inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5);`]]);
   search_cont.appendChild(zip_search);
 
 /* 
@@ -150,15 +150,13 @@ function createLocalPoliticsSearchHTML(){
   
   var sel_all = ele('div');
   a(sel_all,[['selection','none'],['style','text-align: center; width: 21px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
-//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
   opt_cont.appendChild(sel_all);
   sel_all.innerText = '-';
   sel_all.onclick = selectAllOptions;
-// 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
   type_options.forEach(t=> createOptionTypeCard(t,opt_cont));
   
   var search_btn = ele('div');
-  a(search_btn,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: #26bd7e; color: #fff; width: 100%; cursor: pointer;`]]);
+  a(search_btn,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: transparent; color: #26bd7e; width: 100%; cursor: pointer; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.7);`]]);
   search_cont.appendChild(search_btn);
   search_btn.onclick = initBallotSearch;
   search_btn.innerText = 'Search';
@@ -169,6 +167,7 @@ async function initBallotSearch(){
   if(zip && /\d{5}/.test(zip)){
    this.innerText = 'Searching...';
     var types = Array.from(cn(document,'type_data_objects')).filter(t=> t.getAttribute('selection') == 'on').map(t=> t.getAttribute('type'))
+console.log(types)
     var search_obj = { zip: zip, options: { types: types} };
     await searchBallotBy(search_obj,fileArray);
     this.innerText = 'Search';
@@ -195,13 +194,9 @@ function createOptionTypeCard(d,ref){
 }
 
 function selectAllOptions(){
-//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
-//   a(sel_all,[['selection','none'],['style','text-align: center; width: 5ch; box-shadow: inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer']]);
   var selection = this.getAttribute('selection');
   if(selection == 'all'){
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
-//        a(tn(r,'path')[0],[['fill','#26bd7e']]);
-// e21212
        r.innerHTML = svgs.check;
        r.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
        r.onmouseenter = ()=> {};
@@ -213,7 +208,6 @@ function selectAllOptions(){
      this.innerText = '-';
   }else{
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
-//        a(tn(r,'path')[0],[['fill','#e21212']]);
        r.innerHTML = svgs.close;
        r.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
        r.onmouseenter = aninCloseBtn;
@@ -229,15 +223,12 @@ function selectAllOptions(){
 function typeOptionSelector(){
   var selection = this.getAttribute('selection');
   if(selection == 'on'){
-//     a(tn(this,'path')[0],[['fill','#e21212']]);
-
     this.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
     this.innerHTML = svgs.close;
     this.onmouseenter = aninCloseBtn;
     this.onmouseleave = anoutCloseBtn;
     a(this,[['selection','off']]);
   }else{
-//     a(tn(this,'path')[0],[['fill','#26bd7e']]);
      this.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
      this.innerHTML = svgs.check;
      this.onmouseenter = ()=> {};
@@ -246,4 +237,3 @@ function typeOptionSelector(){
   }
 }
 createLocalPoliticsSearchHTML()
-
