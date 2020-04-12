@@ -114,7 +114,7 @@ function createLocalPoliticsSearchHTML(){
   head.onmouseover = dragElement;
 
   var txt = ele('div');
-  a(txt, [  ['style', `color: #fff; font-size: 1em; border-radius: 0.5em; padding: 4px;`]  ]);
+  a(txt, [  ['style', `color: #26bd7e; font-size: 1em; border-radius: 0.5em; padding: 8px;`]  ]);
   head.appendChild(txt);
   txt.innerText = 'Local Search';
 
@@ -158,7 +158,9 @@ function createLocalPoliticsSearchHTML(){
   var search_btn = ele('div');
   a(search_btn,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: transparent; color: #26bd7e; width: 100%; cursor: pointer; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.7);`]]);
   search_cont.appendChild(search_btn);
-  search_btn.onclick = initBallotSearch;
+  search_btn.onmousedown = clickIn;
+  search_btn.onmouseleave = clickOut;
+  search_btn.onmouseup = initBallotSearch;
   search_btn.innerText = 'Search';
 }
 
@@ -166,14 +168,23 @@ async function initBallotSearch(){
   var zip = gi(document,'zip_code_search_input').value;
   if(zip && /\d{5}/.test(zip)){
    this.innerText = 'Searching...';
-    var types = Array.from(cn(document,'type_data_objects')).filter(t=> t.getAttribute('selection') == 'on').map(t=> t.getAttribute('type'))
-console.log(types)
+    var types = Array.from(cn(document,'type_data_objects')).filter(t=> t.getAttribute('selection') == 'on').map(t=> t.getAttribute('type'));
+console.log(types);
     var search_obj = { zip: zip, options: { types: types} };
     await searchBallotBy(search_obj,fileArray);
     this.innerText = 'Search';
+    a(this,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: transparent; color: #26bd7e; width: 100%; cursor: pointer; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.7);`]]);
   }else{
     alert('please enter a valid zipcode, asshole.');
   }
+}
+
+function clickIn(){
+  a(this,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: transparent; color: #26bd7e; width: 100%; cursor: pointer; box-shadow: inset 3px 3px 5px rgb(11, 19, 23,0.7), inset -2px -2px 4px    rgba(25, 47, 56, 0.6);`]]);
+}
+
+function clickOut(){
+  a(this,[['style',`text-align: center; font-size: 1.3em; padding: 6px; border: 1px solid #transparent; border-radius: .4em; background: transparent; color: #26bd7e; width: 100%; cursor: pointer; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.7);`]]);
 }
 
 function createOptionTypeCard(d,ref){
@@ -182,7 +193,7 @@ function createOptionTypeCard(d,ref){
   ref.appendChild(cont);
 
   var check = ele('div');
-  a(check,[['class','type_data_objects'],['type',d],['selection','on'],['style',`text-align: center; width: 18px; height: 18px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #fff; cursor: pointer;`]]);
+  a(check,[['class','type_data_objects'],['type',d],['selection','on'],['style',`text-align: center; width: 18px; height: 18px; box-shadow: 3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px rgba(25, 47, 56, 0.5); border: 1px solid transparent; border-radius: .2em; background: #122026; color: #7c7c7c; cursor: pointer;`]]);
   cont.appendChild(check);
   check.innerHTML = svgs.check;
   check.onclick = typeOptionSelector;
@@ -208,10 +219,8 @@ function selectAllOptions(){
      this.innerText = '-';
   }else{
      Array.from(cn(document,'type_data_objects')).forEach(r=> {
-       r.innerHTML = svgs.close;
+       r.innerHTML = '';
        r.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
-       r.onmouseenter = aninCloseBtn;
-       r.onmouseleave = anoutCloseBtn;
        a(r,[['selection','off']]);
      });
      a(this,[['selection','all']]);
@@ -224,16 +233,15 @@ function typeOptionSelector(){
   var selection = this.getAttribute('selection');
   if(selection == 'on'){
     this.style.boxShadow = 'inset 2px 2px 4px rgb(11, 19, 23,0.6), inset -2px -2px 4px    rgba(25, 47, 56, 0.5)';
-    this.innerHTML = svgs.close;
-    this.onmouseenter = aninCloseBtn;
-    this.onmouseleave = anoutCloseBtn;
+    this.innerHTML = '';
     a(this,[['selection','off']]);
   }else{
-     this.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
-     this.innerHTML = svgs.check;
-     this.onmouseenter = ()=> {};
-     this.onmouseleave = ()=> {};
+    this.style.boxShadow = '3px 3px 5px rgb(11, 19, 23,0.6), -3px -3px 5px    rgba(25, 47, 56, 0.5)';
+    this.innerHTML = svgs.check;
+    this.onmouseenter = ()=> {};
+    this.onmouseleave = ()=> {};
     a(this,[['selection','on']]);
   }
 }
+
 createLocalPoliticsSearchHTML()
